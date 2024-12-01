@@ -1,0 +1,32 @@
+.card {
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+
+  &-img-top {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+
+    &:hover {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🎬</text></svg>") 16 0, auto;
+    }
+  }
+
+  &-body {
+    padding: 16px;
+  }
+}
+.card {
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &-img-top {
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+  }
+}

@@ -1,0 +1,23 @@
+<div class="container py-5">
+  <h1>My Movie Lists</h1>
+  <div class="row">
+    <div class="col-12 mb-4">
+      <%= link_to "Create a new list", new_list_path, class: "btn btn-primary" %>
+    </div>
+    <% @lists.each do |list| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <% if list.photo.attached? %>
+            <%= cl_image_tag list.photo.key, class: "card-img-top", height: 200, style: "object-fit: cover;" %>
+          <% else %>
+            <div class="card-img-top bg-light" style="height: 200px;"></div>
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= list.name %></h5>
+            <%= link_to "View list", list_path(list), class: "btn btn-outline-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

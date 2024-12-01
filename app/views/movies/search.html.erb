@@ -1,0 +1,68 @@
+<div class="container py-5">
+  <h1>Search Movies</h1>
+
+  <div class="search-container position-relative mb-4">
+    <div class="d-flex gap-2">
+      <input type="text"
+             class="form-control"
+             data-controller="autocomplete"
+             data-autocomplete-target="input"
+             data-action="input->autocomplete#search"
+             placeholder="Search for a movie...">
+      <%= link_to "Back to Lists", lists_path, class: "btn btn-outline-secondary" %>
+    </div>
+
+    <div class="search-results position-absolute w-100 bg-white shadow-sm rounded-bottom d-none"
+         data-autocomplete-target="results">
+    </div>
+  </div>
+
+  <div class="movies-container mt-4">
+    <div class="row">
+      <% if @movies&.any? %>
+        <% @movies.each do |movie| %>
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <% if movie['poster_path'] %>
+                <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}",
+                    class: "card-img-top",
+                    alt: movie['title'] %>
+              <% end %>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title"><%= movie['title'] %></h5>
+                <p class="card-text"><%= truncate(movie['overview'], length: 150) %></p>
+                <p class="card-text">
+                  <small class="text-muted">
+                    Release Date: <%= movie['release_date'] %>
+                    | Rating: <%= movie['vote_average'].round(1) %>/10
+                  </small>
+                </p>
+                <div class="mt-auto">
+                  <%= button_to "Add to List",
+                      list_bookmarks_path,
+                      method: :post,
+                      params: {
+                        bookmark: {
+                          movie_id: Movie.find_or_create_by(
+                            title: movie['title'],
+                            overview: movie['overview'],
+                            poster_url: "https://image.tmdb.org/t/p/original#{movie['poster_path']}",
+                            rating: movie['vote_average']
+                          ).id
+                        },
+                        list_id: params[:list_id]
+                      },
+                      class: "btn btn-success w-100" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% elsif params[:query].present? %>
+        <div class="col-12">
+          <p class="alert alert-warning">No movies found for "<%= params[:query] %>"</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
